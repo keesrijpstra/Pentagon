@@ -5,4 +5,6 @@
         </x-slot>
     </x-filament::section>
 
+    @livewire('list-passwords')
+
 </x-filament-panels::page>
