@@ -21,7 +21,7 @@ class ListPasswords extends Component implements HasForms, HasTable
     public function table(Table $table): Table
     {
         return $table
-            ->query(Password::query()->where('user_id', '==', auth()->user()->id))
+            ->query(Password::query()->where('user_id', '=', auth()->user()->id))
             ->columns([
                 TextColumn::make('title'),
                 TextColumn::make('username'),

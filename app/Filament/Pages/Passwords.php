@@ -2,22 +2,31 @@
 
 namespace App\Filament\Pages;
 
-use App\Models\Password;
 use App\Models\User;
+use App\Models\Password;
 use Filament\Pages\Page;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Group;
 use Filament\Actions\Concerns\HasForm;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
+use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Pages\Concerns\InteractsWithFormActions;
 
-class Passwords extends Page 
+class Passwords extends Page
 {
+
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static string $view = 'filament.pages.passwords';
 
     protected $user = null;
+
+    public $formTitle = '';
+    public $username = '';  
+    public $password = '';
+    public $url = '';
 
     public function mount()
     {
@@ -43,7 +52,8 @@ class Passwords extends Page
                 ->form([
                     Group::make()
                         ->schema([
-                                TextInput::make('title')
+                                TextInput::make('formTitle')
+                                    ->label('Title')
                                     ->required(),
                                 TextInput::make('username')
                                     ->required(),
@@ -55,13 +65,26 @@ class Passwords extends Page
                                 ->required(),
                             TextInput::make('url')
                         ])->columns(2)
-                ]),
+                ])
+                ->action(function (array $data): void {
+                    Password::create([
+                        'user_id' => auth()->id(),
+                        'title' => $data['formTitle'],
+                        'username' => $data['username'],
+                        'password' => $data['password'], 
+                        'url' => $data['url'],
+                    ]);
+                    
+                    Notification::make()
+                        ->title('Password created successfully')
+                        ->success()
+                        ->send();
+                }),
         ];
     }
-    
-    public function openSettingsModal(): void
+    public function createPassword(): void
     {
-        $this->dispatchBrowserEvent('open-settings-modal');
+        $this->dispatch('open-modal', id: 'create-password-modal');
     }
 
     public function table()
