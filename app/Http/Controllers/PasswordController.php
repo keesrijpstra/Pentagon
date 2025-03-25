@@ -20,7 +20,26 @@ class PasswordController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'user_id' => 'required',
+            'title' => 'required',
+            'username' => 'required',
+            'password' => 'required',
+            'url' => 'required',
+        ]);
+
+        Password::create([
+            'user_id' => $validated['user_id'],
+            'title' => $validated['title'],
+            'username' => $validated['username'],
+            'password' => bcrypt($validated['password']),   
+            'url' => $validated['url'],
+        ]);
+
+        return response()->json([
+            'message' => 'Password stored successfully',
+            'success' => true
+        ], 201 );
     }
 
     /**

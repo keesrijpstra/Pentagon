@@ -47,7 +47,7 @@ class Passwords extends Page
     {
         return [
             Action::make('create')
-                ->label('New')
+                ->label('New password')
                 ->slideOver()
                 ->form([
                     Group::make()
@@ -82,6 +82,7 @@ class Passwords extends Page
                 }),
         ];
     }
+
     public function createPassword(): void
     {
         $this->dispatch('open-modal', id: 'create-password-modal');
