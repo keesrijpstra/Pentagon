@@ -14,16 +14,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        User::factory(10)->create();
 
-        // if (User::where('email', '!=', 'keesrijpstrat@gmail.com')) 
-        // {
-        //     User::factory()->create([
-        //         'name' => 'keesrijpstrat@gmail.com',
-        //         'email' => 'keesrijpstrat@gmail.com',
-        //         'password' => bcrypt(getenv('ADMIN_PASSWORD'))
-        //     ]);
-        // }
+        if (User::where('email', '!=', 'keesrijpstrat@gmail.com')) 
+        {
+            User::factory()->create([
+                'name' => 'keesrijpstrat@gmail.com',
+                'email' => 'keesrijpstrat@gmail.com',
+                'password' => bcrypt('!Peperklip11!'),
+            ]);
+        }
 
 
         Password::factory(10)->create();

@@ -12,10 +12,12 @@ use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Concerns\InteractsWithForms;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Pages\Concerns\InteractsWithFormActions;
 
 class Passwords extends Page
 {
+    use HasPageShield;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
