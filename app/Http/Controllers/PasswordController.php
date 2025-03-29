@@ -36,7 +36,7 @@ class PasswordController extends Controller
             ], 404);
         }
         
-        if ($user->passwords()->count() > 0) {
+        if ($passwords->isNotEmpty()) {
             return response()->json([
                 'success' => true,
                 'message' => 'Passwords found',
