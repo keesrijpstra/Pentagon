@@ -19,17 +19,19 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use DutchCodingCompany\FilamentDeveloperLogins\FilamentDeveloperLoginsPlugin;
-use Register;
+use App\Filament\Pages\Auth\Register;
 
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+        // Use filter_var to make sure array elements are all valid
         $plugins = [
-            \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
+            BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
         ];
         
-        if (!app()->environment('production')) {
+        // Only add the FilamentDeveloperLoginsPlugin in non-production environments
+        if (app()->environment() !== 'production') {
             $plugins[] = FilamentDeveloperLoginsPlugin::make()
                 ->enabled()
                 ->users([
@@ -67,16 +69,7 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
-            ->plugins([
-                \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
-                app()->environment('production')
-                    ? null
-                    : FilamentDeveloperLoginsPlugin::make()
-                        ->enabled()
-                        ->users([
-                            'Admin' => 'keesrijpstrat@gmail.com',
-                        ])
-            ])
+            ->plugins($plugins)
             ->authMiddleware([
                 Authenticate::class,
             ]);
