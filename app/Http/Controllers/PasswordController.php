@@ -27,7 +27,9 @@ class PasswordController extends Controller
             ], 404);
         }
 
-        if ($user->passwords()->count() == 0) {
+        $passwords = Password::query()->where('user_id', '=', $user->id)->get();
+        
+        if ($passwords->isEmpty()) {
             return response()->json([
                 'success' => false,
                 'message' => 'No passwords found'
