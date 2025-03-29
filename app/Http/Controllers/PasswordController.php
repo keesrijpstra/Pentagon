@@ -48,7 +48,7 @@ class PasswordController extends Controller
             'user_id' => $validated['user_id'],
             'title' => $validated['title'],
             'username' => $validated['username'],
-            'password' => bcrypt($validated['password']),   
+            'password' => $validated['password'],   
             'url' => $validated['url'],
         ]);
 

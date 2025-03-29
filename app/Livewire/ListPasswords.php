@@ -197,25 +197,26 @@ class ListPasswords extends Component implements HasForms, HasTable
 
                                     ])->columns(2),
                                     TextInput::make('password')
-                                    ->label('Password')
-                                    ->password()
-                                    ->revealable()
-                                    ->dehydrateStateUsing(fn ($state) => filled($state) ? Hash::make($state) : null)
-                                    ->dehydrated(fn ($state) => filled($state))
-                                    ->helperText('Leave blank to keep current password')
-                                    ->suffixActions([
-                                        FormActionTable::make('copy')
-                                            ->icon('heroicon-s-clipboard')
-                                            ->action(function ($livewire, TextInput $component) {
-                                                $livewire->dispatch('notify', type: 'success', message: 'Password copied!');
-                                                $livewire->dispatch('copy-password', text: $component->getState());
-                                            }),
-                                        FormActionTable::make('generate')
-                                            ->icon('heroicon-m-sparkles')
-                                            ->action(function (TextInput $component) {
-                                                $component->state(Str::password(16, symbols: true));
-                                            })
-                                    ]),
+                                        ->label('Password')
+                                        ->password()
+                                        ->revealable()
+                                        // Remove the hashing since the model will handle encryption
+                                        // ->dehydrateStateUsing(fn ($state) => filled($state) ? Hash::make($state) : null)
+                                        ->dehydrated(fn ($state) => filled($state))
+                                        ->helperText('Leave blank to keep current password')
+                                        ->suffixActions([
+                                            FormActionTable::make('copy')
+                                                ->icon('heroicon-s-clipboard')
+                                                ->action(function ($livewire, TextInput $component) {
+                                                    $livewire->dispatch('notify', type: 'success', message: 'Password copied!');
+                                                    $livewire->dispatch('copy-password', text: $component->getState());
+                                                }),
+                                            FormActionTable::make('generate')
+                                                ->icon('heroicon-m-sparkles')
+                                                ->action(function (TextInput $component) {
+                                                    $component->state(Str::password(16, symbols: true));
+                                                })
+                                        ]),
                             ]),
                             
                             FormSection::make('Additional Settings')
