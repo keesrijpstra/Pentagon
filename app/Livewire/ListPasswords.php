@@ -200,8 +200,6 @@ class ListPasswords extends Component implements HasForms, HasTable
                                         ->label('Password')
                                         ->password()
                                         ->revealable()
-                                        // Remove the hashing since the model will handle encryption
-                                        // ->dehydrateStateUsing(fn ($state) => filled($state) ? Hash::make($state) : null)
                                         ->dehydrated(fn ($state) => filled($state))
                                         ->helperText('Leave blank to keep current password')
                                         ->suffixActions([

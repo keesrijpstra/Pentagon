@@ -12,7 +12,35 @@ class PasswordController extends Controller
      */
     public function index()
     {
-        return Password::all();
+        if (!auth('sanctum')->check()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthenticated'
+            ], 401);
+        }
+        $user = auth('sanctum')->user();
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        if ($user->passwords()->count() == 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No passwords found'
+            ], 404);
+        }
+        
+        if ($user->passwords()->count() > 0) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Passwords found',
+                'passwords' => Password::query()->where('user_id', '=', $user->id)
+            ], 200);
+        }
     }
 
     /**
