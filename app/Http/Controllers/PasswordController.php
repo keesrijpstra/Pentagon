@@ -18,11 +18,9 @@ class PasswordController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    // In your PasswordController.php
 
     public function store(Request $request)
     {
-        // Ensure request is authenticated
         if (!auth('sanctum')->check()) {
             return response()->json([
                 'success' => false,
@@ -38,7 +36,6 @@ class PasswordController extends Controller
             'url' => 'required',
         ]);
 
-        // Verify user_id matches authenticated user
         $user = auth('sanctum')->user();
         if ($user->id != $validated['user_id']) {
             return response()->json([
