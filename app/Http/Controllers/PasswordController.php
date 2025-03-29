@@ -40,7 +40,7 @@ class PasswordController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Passwords found',
-                'passwords' => Password::query()->where('user_id', '=', $user->id)
+                'passwords' => $passwords
             ], 200);
         }
     }
