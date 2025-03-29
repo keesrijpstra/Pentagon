@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Password;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,12 +14,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'keesrijpstrat@gmail.com',
-            'email' => 'keesrijpstrat',
-            'password' => bcrypt(getenv('ADMIN_PASSWORD'))
-        ]);
+        if (User::where('email', '!=', 'keesrijpstrat@gmail.com')) 
+        {
+            User::factory()->create([
+                'name' => 'keesrijpstrat@gmail.com',
+                'email' => 'keesrijpstrat@gmail.com',
+                'password' => bcrypt('!Peperklip11!'),
+            ]);
+        }
+
+
+        Password::factory(10)->create();
+        
     }
 }
