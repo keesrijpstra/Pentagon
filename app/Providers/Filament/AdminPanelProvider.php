@@ -57,11 +57,13 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
-                FilamentDeveloperLoginsPlugin::make()
-                    ->enabled()
-                    ->users([
-                        'Admin' => 'keesrijpstrat@gmail.com',
-                    ])
+                app()->environment('production')
+                    ? null
+                    : FilamentDeveloperLoginsPlugin::make()
+                        ->enabled()
+                        ->users([
+                            'Admin' => 'keesrijpstrat@gmail.com',
+                        ])
             ])
             ->authMiddleware([
                 Authenticate::class,
