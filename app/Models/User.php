@@ -61,8 +61,8 @@ class User extends Authenticatable implements MustVerifyEmail, FilamentUser
 
     protected static function booted(): void
     {
-        static::creating(function (User $user) {
-            $user->role = 'user';
+        static::created(function (User $user) {
+            $user->assignRole('panel_user');
         });
     }
 

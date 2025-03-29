@@ -2,11 +2,13 @@
 
 namespace App\Providers\Filament;
 
+use Register;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Pages\Auth\Register as Hoi;
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -19,7 +21,6 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use DutchCodingCompany\FilamentDeveloperLogins\FilamentDeveloperLoginsPlugin;
-use Register;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -30,7 +31,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('/')
             ->login()
-            ->registration(Register::class)
+            ->registration(Hoi::class)
             ->colors([
                      
             ])
