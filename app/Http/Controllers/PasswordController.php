@@ -28,18 +28,18 @@ class PasswordController extends Controller
         }
 
         $passwords = Password::query()->where('user_id', '=', $user->id)->get();
-        
+
         if ($passwords->isEmpty()) {
             return response()->json([
                 'success' => false,
-                'message' => 'No passwords found'
+                'message' => 'No passwords found1'
             ], 404);
         }
         
         if ($user->passwords()->count() > 0) {
             return response()->json([
                 'success' => true,
-                'message' => 'Passwords found',
+                'message' => 'Passwords found2',
                 'passwords' => Password::query()->where('user_id', '=', $user->id)
             ], 200);
         }
