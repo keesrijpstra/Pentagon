@@ -45,23 +45,20 @@ class PasswordController extends Controller
         }
     }
 
-    public function getPassword($id) {
+    public function getPassword($id)
+    {
         if (!auth('sanctum')->check()) {
             return response()->json([
                 'success' => false,
                 'message' => 'Unauthenticated'
             ], 401);
         }
+        
         $user = auth('sanctum')->user();
-
-        if (!$user) {
-            return response()->json([
-                'success' => false,
-                'message' => 'User not found'
-            ], 404);
-        }
-
-        $password = Password::query()->where('user_id', '=', $user->id)->where('id', '=', $id)->first();
+        
+        $password = Password::where('id', $id)
+                            ->where('user_id', $user->id)
+                            ->first();
         
         if (!$password) {
             return response()->json([
@@ -72,9 +69,12 @@ class PasswordController extends Controller
         
         return response()->json([
             'success' => true,
-            'message' => 'Password found',
-            'password' => $password
-        ], 200);
+            'id' => $password->id,
+            'title' => $password->title,
+            'url' => $password->url,
+            'username' => $password->username,
+            'password' => $password->password
+        ]);
     }
 
     /**
