@@ -32,6 +32,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('/')
             ->login()
             ->registration(Hoi::class)
+            ->emailVerification()
             ->colors([
                      
             ])
