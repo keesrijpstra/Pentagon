@@ -32,7 +32,7 @@ class PasswordController extends Controller
         if ($passwords->isEmpty()) {
             return response()->json([
                 'success' => false,
-                'message' => 'No passwords found1'
+                'message' => 'No passwords found1 [' . $user->id . ']',
             ], 404);
         }
         
