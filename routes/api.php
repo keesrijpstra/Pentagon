@@ -12,4 +12,5 @@ use App\Http\Controllers\PasswordController;
 //create a route that will store the password that it will get crom a chrome extension
 Route::middleware('auth:sanctum')->post('/store-password', [PasswordController::class, 'store']);
 Route::middleware('auth:sanctum')->get('/get-passwords', [App\Http\Controllers\PasswordController::class, 'index']);
+Route::middleware('auth:sanctum')->get('/get-password/{id}', [PasswordController::class, 'getPassword']);
 Route::post('/login', [AuthController::class, 'login']);

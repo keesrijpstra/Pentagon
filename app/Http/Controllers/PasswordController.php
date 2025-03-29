@@ -45,6 +45,38 @@ class PasswordController extends Controller
         }
     }
 
+    public function getPassword($id) {
+        if (!auth('sanctum')->check()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthenticated'
+            ], 401);
+        }
+        $user = auth('sanctum')->user();
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        $password = Password::query()->where('user_id', '=', $user->id)->where('id', '=', $id)->first();
+        
+        if (!$password) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Password not found'
+            ], 404);
+        }
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Password found',
+            'password' => $password
+        ], 200);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
