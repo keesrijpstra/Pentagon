@@ -25,6 +25,18 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+        $plugins = [
+            \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
+        ];
+        
+        if (!app()->environment('production')) {
+            $plugins[] = FilamentDeveloperLoginsPlugin::make()
+                ->enabled()
+                ->users([
+                    'Admin' => 'keesrijpstrat@gmail.com',
+                ]);
+        }
+        
         return $panel
             ->default()
             ->id('admin')
