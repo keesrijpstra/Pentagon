@@ -71,4 +71,9 @@ class User extends Authenticatable implements MustVerifyEmail, FilamentUser
     {
         return $this->belongsToMany(Role::class);
     }
+
+    public function passwords()
+    {
+        return $this->hasMany(Password::class);
+    }
 }
