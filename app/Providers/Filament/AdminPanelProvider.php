@@ -21,6 +21,7 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use DutchCodingCompany\FilamentDeveloperLogins\FilamentDeveloperLoginsPlugin;
+use Filament\Notifications\NotificationsServiceProvider;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -59,6 +60,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
+                NotificationsServiceProvider::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
