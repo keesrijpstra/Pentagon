@@ -60,7 +60,6 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
-                NotificationsServiceProvider::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
