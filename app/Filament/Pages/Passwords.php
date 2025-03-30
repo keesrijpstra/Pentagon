@@ -76,10 +76,13 @@ class Passwords extends Page
                         'password' => $data['password'], 
                         'url' => $data['url'],
                     ]);
+
+                    $user = auth()->user();
                     
                     Notification::make()
-                        ->title('Password created successfully')
+                        ->title('Password for ' . '<strong>' . $data['formTitle'] . '</strong>' . ' stored successfully')
                         ->success()
+                        ->sendToDatabase($user)
                         ->send();
                 }),
         ];

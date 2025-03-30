@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Password;
 use Illuminate\Http\Request;
+use Filament\Notifications\Notification;
 
 class PasswordController extends Controller
 {
@@ -113,6 +114,12 @@ class PasswordController extends Controller
             'password' => $validated['password'],   
             'url' => $validated['url'],
         ]);
+
+        Notification::make()
+            ->title('Password for ' . '<strong>' . $validated['title'] . '</strong>' . ' stored successfully')
+            ->success()
+            ->sendToDatabase($user)
+            ->send();
 
         return response()->json([
             'message' => 'Password stored successfully',
