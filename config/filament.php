@@ -86,8 +86,9 @@ return [
 
     'livewire_loading_delay' => 'default',
 
-    'database_notifications' => [
+    'database' => [
         'enabled' => true,
+        'polling_interval' => '30s',
     ],
 
 ];
