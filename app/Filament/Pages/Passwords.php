@@ -30,6 +30,26 @@ class Passwords extends Page
     public $password = '';
     public $url = '';
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()->can('page_passwords_view');
+    }
+
+    protected function canCreate(): bool
+    {
+        return auth()->user()->can('page_custom-page_create');
+    }
+    
+    protected function canUpdate(): bool
+    {
+        return auth()->user()->can('page_custom-page_update');
+    }
+    
+    protected function canDelete(): bool
+    {
+        return auth()->user()->can('page_custom-page_delete');
+    }
+
     public function mount()
     {
         $currentUser = auth()->user();
@@ -51,6 +71,7 @@ class Passwords extends Page
             Action::make('create')
                 ->label('New password')
                 ->slideOver()
+                ->visible(fn (): bool => $this->canCreate())
                 ->form([
                     Group::make()
                         ->schema([
