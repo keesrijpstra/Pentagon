@@ -47,7 +47,7 @@ class UserResource extends Resource
             ->columns([
                 TextColumn::make('id'),
                 TextColumn::make('name'),
-                TextColumn::make('email'),
+                TextColumn::make('email')->searchable(),
                 IconColumn::make('email_verified_at')
                     ->boolean()
             ])
