@@ -1,6 +1,5 @@
 <?php
 
-// app/Filament/Resources/Shield/PermissionResource/custom-permissions.php
 
 return [
     'Password Management' => [
