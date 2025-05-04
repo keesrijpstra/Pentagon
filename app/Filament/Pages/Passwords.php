@@ -62,7 +62,8 @@ class Passwords extends Page
 
     public static function getNavigationBadge(): ?string
     {
-        return Password::count();
+        $count = Password::query()->where('user_id', auth()->user()->id)->count();
+        return $count > 0 ? (string) $count : null;
     }
 
     protected function getActions(): array
