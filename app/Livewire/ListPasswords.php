@@ -13,12 +13,14 @@ use Filament\Forms\Components\Group;
 use Illuminate\Support\Facades\Hash;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Support\Enums\IconPosition;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Columns\BadgeColumn;
@@ -28,6 +30,8 @@ use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Tables\Actions\BulkActionGroup;
+use Illuminate\Database\Eloquent\Collection;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Forms\Components\Section as FormSection;
@@ -40,6 +44,7 @@ class ListPasswords extends Component implements HasForms, HasTable
     use InteractsWithForms;
     use InteractsWithTable;
 
+    #[On('refresh')]
     public function table(Table $table): Table
     {
         return $table
@@ -48,12 +53,12 @@ class ListPasswords extends Component implements HasForms, HasTable
                 TextColumn::make('url')
                     ->label('Website')
                     ->searchable()
-                    ->url(fn (Password $record): string => $record->url)
+                    ->url(fn (Password $record): ?string => $record?->url)
                     ->openUrlInNewTab()
                     ->icon('heroicon-c-arrow-up-right')
                     ->iconPosition(IconPosition::After)
                     ->limit(10)
-                    ->tooltip(fn (Password $record): string => $record->url)
+                    ->tooltip(fn (Password $record): ?string => $record?->url)                    
                     ->iconColor('primary'),
                 TextColumn::make('username')
                     ->searchable()
@@ -238,18 +243,58 @@ class ListPasswords extends Component implements HasForms, HasTable
                 ]),
             ])
             ->bulkActions([
+                BulkActionGroup::make([
+                    BulkAction::make('delete')
+                        ->action(fn (Collection $records) => $records->each->delete())
+                ])
             ])
             ->emptyStateHeading('No passwords yet')
             ->emptyStateDescription('Create your first password entry to get started with secure password management.')
             ->emptyStateIcon('heroicon-o-lock-closed')
             ->emptyStateActions([
                 Action::make('create')
-                    ->label('Create Password')
-                    ->icon('heroicon-o-plus')
-                    ->button(),
+                ->label('New password')
+                ->slideOver()
+                ->button()
+                ->form([
+                    Group::make()
+                        ->schema([
+                                TextInput::make('formTitle')
+                                    ->label('Title')
+                                    ->required(),
+                                TextInput::make('username')
+                                    ->required(),
+                            ])->columns(2),
+                    Group::make()
+                        ->schema([
+                            TextInput::make('password')
+                                ->password()
+                                ->required(),
+                            TextInput::make('url')
+                        ])->columns(2)
+                ])
+                ->action(function (array $data): void {
+                    Password::create([
+                        'user_id' => auth()->id(),
+                        'title' => $data['formTitle'],
+                        'username' => $data['username'],
+                        'password' => $data['password'], 
+                        'url' => $data['url'],
+                    ]);
+
+                    $user = auth()->user();
+                    
+                    Notification::make()
+                        ->title('Password for ' . '<strong>' . $data['formTitle'] . '</strong>' . ' stored successfully')
+                        ->success()
+                        ->sendToDatabase($user)
+                        ->send();
+
+                }),
+                
             ])
             ->paginated([10, 25, 50, 100])
-            ->poll('60s');
+            ->poll('1s');
     }
 
     #[On('copy-password')]
